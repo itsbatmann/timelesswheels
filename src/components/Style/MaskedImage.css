@@ -1,0 +1,17 @@
+.img {
+  position: relative;
+  width: 100%; /* Allow responsive width */
+  height: 400px; /* Fixed height, or adjust as necessary */
+  overflow: hidden;
+}
+  
+  .mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  

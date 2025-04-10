@@ -1,0 +1,133 @@
+@import url(https://fonts.googleapis.com/css?family=Kufam:regular,500,600,700,800,900,italic,500italic,600italic,700italic,800italic,900italic);
+
+
+body {
+  font-family: 'KyivType Sans';
+}
+
+
+:root {
+  --color-primary: #d53f41;
+  --color-dark: #626262;
+  --color-darker: #464646;
+  --color-light: #dbd8d6;
+  --color-lighter: #f5f0ec;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "poppins", sans-serif;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 1px;
+  background-color: rgb(24, 35, 15);
+  color: var(--color-darker);
+}
+.wrapper {
+  margin: 0 5vw;
+}
+
+section {
+  padding: 10vw 0;
+  background-color: 18230F;
+}
+
+.section-title {
+  font-family: "syncopate", sans-serif;
+  font-size: 1.5rem;
+  padding-bottom: 5vh;
+  text-transform: lowercase;
+  color: var(--color-primary);
+}
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Kufam:wght@700&display=swap');
+
+
+
+
+
+
+
+.logo a {
+  color: var(--color-darker);
+}
+
+
+
+
+
+.features {
+  display: grid;
+  grid-template-columns: 30% auto;
+  align-items: center;
+  gap: 10rem;
+}
+
+.feature-text {
+  letter-spacing: 5px;
+  font-weight: 500;
+}
+
+.features img {
+  width: 100%;
+}
+
+.feature-l,
+.feature-r {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: relative;
+}
+
+.feature-shutter-l,
+.feature-shutter-r {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgb(24, 35, 15);
+}
+.about p {
+  font-size: 3vw;
+  line-height: 1.5;
+}
+.about p:last-child {
+  margin-top: 3vw;
+}
+
+
+
+.footer {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.footer h1 {
+  font-family: "Bodoni Moda", serif;
+  font-size: 10vw;
+  text-transform: lowercase;
+  color: wheat;
+}

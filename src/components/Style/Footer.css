@@ -1,0 +1,222 @@
+/* Base Styles */
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap:30px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #121e0f; /* dark greenish background */
+  padding: 5rem;
+  color: #fefee0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-left {
+  flex: 1;
+  margin-top: 25rem;
+}
+
+.footer-heading {
+  font-size: 15rem;
+  font-family: kufam, sans-serif;
+  margin: 0;
+  font-weight: 400;
+}
+
+.about {
+  font-family: kufam, sans-serif;
+}
+
+.contact {
+  margin-top: 14rem;
+  margin-left: 29rem;
+}
+
+.footer-tagline {
+  margin-top: 3rem;
+  font-size: 3.5rem;
+  font-family: kufam, sans-serif;
+  color: bisque;
+}
+
+.highlight {
+  color: red;
+  font-family: 'Alex Brush', cursive;
+  font-size: 9rem;
+}
+
+.footer-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  max-width: 470px;
+  height: 650px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.footer-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+/* Importing Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap');
+
+/* Perfect overlay container */
+.f1text {
+  position: absolute;
+  bottom: 90px;
+  left: 15px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  max-width: 410px;
+  color: #fff;
+  font-family: 'Alex Brush', cursive;
+  font-size: 1rem;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Extra insurance for f1text's paragraph */
+.f1text p {
+  margin: 0;
+  color: #fff;
+  font-family: 'Alex Brush', cursive;
+  font-size: 3rem;
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1200px) {
+  .footer-container {
+    padding: 4rem;
+    gap: 20px;
+  }
+  
+  .footer-heading {
+    font-size: 10rem;
+  }
+  
+  .footer-tagline {
+    font-size: 3rem;
+  }
+  
+  .highlight {
+    font-size: 7rem;
+  }
+  
+  .footer-left {
+    margin-top: 15rem;
+    gap: 20px;
+  }
+  
+  .contact {
+    margin-top: 10rem;
+    margin-left: 20rem;
+  }
+
+  
+  .image-container {
+    max-width: 500px;
+    height: 550px;
+  }
+  
+  .f1text p {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    padding: 2rem;
+  }
+  
+  .footer-left, 
+  .footer-right {
+    margin: 0;
+    flex: none;
+    gap: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .footer-heading {
+    font-size: 6rem;
+  }
+  
+  .footer-tagline {
+    font-size: 2.5rem;
+  }
+  
+  .highlight {
+    font-size: 4rem;
+  }
+  
+  .contact {
+    margin: 8rem 0 0 0;
+
+  }
+  
+  .image-container {
+    max-width: 100%;
+    height: 500px;
+    margin: 2rem auto;
+  }
+  
+  .footer-image {
+    height: auto;
+  }
+  
+  .f1text {
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+  }
+  
+  .f1text p {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-container {
+    padding: 3rem;
+  }
+  
+  .footer-heading {
+    font-size: 4rem;
+  
+  }
+    
+  .image-container{
+    height: 600px;
+  }
+  
+  .footer-tagline {
+    font-size: 2rem;
+  }
+  
+  .highlight {
+    font-size: 3rem;
+  }
+  
+  .contact {
+    margin: 1rem auto;
+    margin-top: 5rem;
+  }
+  
+  .f1text p {
+    font-size: 1.5rem;
+  }
+}

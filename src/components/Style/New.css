@@ -1,0 +1,52 @@
+.new-wrapper {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background: #FFF7D9;
+    padding: 50px;
+    box-sizing: border-box;
+  }
+  
+  .heading {
+    position: absolute;
+    top: 30%;
+    right: 50px;
+    color: red;
+    font-size:4.8rem;
+    font-family: kufam;
+    font-weight: 500;
+    line-height: 1.3;
+    text-align: right;
+  }
+  
+  .paragraph {
+    position: absolute;
+    bottom: 150px;
+    left: 50px;
+    width: 50%;
+    font-family: kufam;
+    color: red;
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .paragraph i {
+    font-style: italic;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .heading {
+      font-size: 2rem;
+      top: 20%;
+      right: 20px;
+      text-align: left;
+    }
+  
+    .paragraph {
+      width: 90%;
+      left: 20px;
+      bottom: 60px;
+    }
+  }
+  

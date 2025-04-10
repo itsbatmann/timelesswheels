@@ -1,0 +1,18 @@
+.clock {
+  position: absolute;
+ 
+
+  right: 5px;
+
+
+  transition: 0.5s;
+  
+  font-size: 24px;
+  font-family:Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  display: flex; /* Use flexbox for alignment */
+  align-items: center; /* Center items vertically */
+}
+
+.clock span {
+  margin-right: 5px; /* Space between day and time */
+}

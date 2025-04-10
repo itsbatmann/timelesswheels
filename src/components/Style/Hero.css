@@ -1,0 +1,89 @@
+@import url(https://fonts.googleapis.com/css?family=Kufam:regular,500,600,700,800,900,italic,500italic,600italic,700italic,800italic,900italic);
+@import url(https://fonts.googleapis.com/css?family=Alex+Brush:regular);
+
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Kufam:wght@400;600&display=swap');
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgb(24, 35, 15);
+  color: white;
+}
+
+.content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+.left .title {
+  font-family: 'Kufam', sans-serif;
+  font-size: 7vw;
+  font-weight: 400;
+  line-height: 1;
+  position: relative;
+  text-align: left;
+}
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0; /* remove space between lines */
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.title-word, .since-year {
+  margin: 0;
+  padding: 0;
+}
+
+
+.timeless {
+  font-size: 7vw;
+}
+
+.since-year {
+  font-size: 2.5vw;
+  margin-top: 0; /* No gap */
+  font-style: italic;
+  display: flex;
+  gap: 0.3vw;
+}
+
+
+.since {
+  font-family: 'Alex Brush', cursive;
+}
+
+.year {
+  font-family: 'Kufam', sans-serif;
+  font-weight: bold;
+}
+
+.right.wheels p{
+  color: white;
+  font-family: alex brush;
+  line-height: 0.7;
+  font-size: 7vw;
+}
+
+
+.wheels {
+  font-family: 'Alex Brush', cursive;
+  font-size: 4vw;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  z-index: 10;
+  position: relative;
+
+}
