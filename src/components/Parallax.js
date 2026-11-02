@@ -1,77 +1,48 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "../anim/gsap";
 
-const lerp = (start, end, factor) => start + (end - start) * factor;
-
-const Parallax = ({ src, alt }) => {
+/**
+ * Parallax media.
+ *
+ * This used to run its own requestAnimationFrame loop with a hand-rolled lerp
+ * off window.scrollY. Under Lenis that meant three clocks disagreeing — smooth
+ * scroll, this loop, and GSAP — so the image lagged the page it sits in.
+ * ScrollTrigger scrubs it on the same ticker as everything else instead.
+ */
+const Parallax = ({ src, alt, className = "", strength = 8 }) => {
   const mediaRef = useRef(null);
-  const bounds = useRef(null);
-  const currentTranslateY = useRef(0);
-  const targetTranslateY = useRef(0);
-  const rafId = useRef(null);
 
-  useEffect(() => {
-    const updateBounds = () => {
-      if (mediaRef.current) {
-        const rect = mediaRef.current.getBoundingClientRect();
-        bounds.current = {
-          top: rect.top + window.scrollY,
-          bottom: rect.bottom + window.scrollY,
-          height: rect.height,
-        };
+  useGSAP(() => {
+    const el = mediaRef.current;
+    // Oversized so there is room to travel without baring an edge.
+    gsap.set(el, { scale: 1.25 });
+
+    gsap.fromTo(
+      el,
+      { yPercent: -strength },
+      {
+        yPercent: strength,
+        ease: "none",
+        scrollTrigger: {
+          trigger: el.parentElement,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 1,
+        },
       }
-    };
-
-    const animate = () => {
-      currentTranslateY.current = lerp(
-        currentTranslateY.current,
-        targetTranslateY.current,
-        0.1
-      );
-
-      if (mediaRef.current) {
-        mediaRef.current.style.transform = `translateY(${currentTranslateY.current}px) scale(1.05)`;
-      }
-
-      rafId.current = requestAnimationFrame(animate);
-    };
-
-    updateBounds();
-    animate();
-
-    window.addEventListener("resize", updateBounds);
-
-    return () => {
-      window.removeEventListener("resize", updateBounds);
-      cancelAnimationFrame(rafId.current);
-    };
+    );
   }, []);
 
-  useEffect(() => {
-    const onScroll = () => {
-      if (!bounds.current) return;
-      const scrollY = window.scrollY;
-      const relativeScroll = scrollY - bounds.current.top;
-      targetTranslateY.current = relativeScroll * 0.2;
-    };
+  const isVideo = /\.(mp4|webm|ogg)$/i.test(src);
 
-    window.addEventListener("scroll", onScroll);
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
-
-  const isVideo = src.endsWith(".mp4") || src.endsWith(".webm") || src.endsWith(".ogg");
-
-  // Updated inline styles for both images and videos
   const mediaStyles = {
     willChange: "transform",
-    transform: "translateY(0) scale(1.25)",
     width: "100%",
-    height: "100%", // Fill the container
-    objectFit: "cover", // Preserve aspect ratio and fill container without stretching
+    height: "100%",
+    objectFit: "cover",
     display: "block",
-    borderRadius: "20px"
+    borderRadius: "20px",
   };
 
   return isVideo ? (
@@ -82,6 +53,7 @@ const Parallax = ({ src, alt }) => {
       muted
       loop
       playsInline
+      className={className}
       style={mediaStyles}
     />
   ) : (
@@ -89,6 +61,7 @@ const Parallax = ({ src, alt }) => {
       ref={mediaRef}
       src={src}
       alt={alt}
+      className={className}
       style={mediaStyles}
     />
   );

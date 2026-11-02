@@ -3,13 +3,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Kufam:wght@400;600&display=swap');
 
+/* The client's own home screen. Left as it was, apart from taking its ground
+   from the page token so it matches the darker room the rest now sits in. */
 .container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: rgb(24, 35, 15);
-  color: white;
+  background-color: var(--bg);
+  color: var(--ink);
 }
 
 .content {
@@ -69,21 +71,67 @@
 }
 
 .right.wheels p{
-  color: white;
+  color: var(--ink);
   font-family: alex brush;
   line-height: 0.7;
   font-size: 7vw;
+  margin: 0;
 }
 
 
 .wheels {
   font-family: 'Alex Brush', cursive;
   font-size: 4vw;
-  color: white;
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   text-align: left;
   z-index: 10;
   position: relative;
 
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop is left exactly as the client drew it. Below 64em the 7vw type
+   shrank to a postage stamp and left most of the screen empty, so the same
+   composition is simply scaled to fill the screen it is on. */
+@media (max-width: 64em) {
+  .left .title,
+  .timeless {
+    font-size: 11vw;
+  }
+
+  .right.wheels p {
+    font-size: 11vw;
+  }
+
+  .since-year {
+    font-size: 4.2vw;
+  }
+}
+
+@media (max-width: 48em) {
+  .container {
+    height: auto;
+    min-height: 72svh;
+    padding-block: 5rem;
+  }
+
+  .content {
+    padding: 0 1.25rem;
+  }
+
+  .left .title,
+  .timeless,
+  .right.wheels p {
+    font-size: 13vw;
+  }
+
+  .since-year {
+    font-size: 5.2vw;
+  }
 }

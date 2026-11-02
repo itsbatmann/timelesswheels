@@ -1,52 +1,96 @@
-.new-wrapper {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background: #FFF7D9;
-    padding: 50px;
-    box-sizing: border-box;
+/* About — "Inset panel, shaped portrait".
+   One deep-toned panel inset from the page edges, the photograph masked to a
+   single bold shape and cropped by the panel's bottom edge. */
+
+.about {
+  padding: var(--section) var(--margin);
+  background: var(--bg);
+}
+
+.about__panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  align-content: start;
+  gap: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 6rem);
+
+  padding: clamp(2rem, 4vw, 3.5rem);
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.about__statement {
+  grid-column: 1;
+  align-self: start;
+  max-width: 14ch;
+  font-size: clamp(2rem, 4.4vw, 3.5rem);
+  line-height: 1.02;
+}
+
+/* The arch: one bold shape taken from a wheel arch, which is the shape this
+   workshop spends its days rebuilding. */
+.about__figure {
+  grid-column: 1;
+  align-self: start;
+  width: min(38vw, 420px);
+  margin: 0;
+}
+
+.about__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.about__side {
+  grid-column: 2;
+  align-self: start;
+  display: grid;
+  gap: 4rem;
+  justify-items: start;
+  padding-top: 0.5rem;
+}
+
+.about__sub {
+  font-size: 1.375rem;
+  line-height: 1.15;
+  padding-bottom: 0.6rem;
+}
+
+.about__copy {
+  max-width: 34ch;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 64em) {
+  .about__panel {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
   }
-  
-  .heading {
-    position: absolute;
-    top: 30%;
-    right: 50px;
-    color: red;
-    font-size:4.8rem;
-    font-family: kufam;
-    font-weight: 500;
-    line-height: 1.3;
-    text-align: right;
+
+  .about__statement,
+  .about__figure,
+  .about__side {
+    grid-column: 1;
   }
-  
-  .paragraph {
-    position: absolute;
-    bottom: 150px;
-    left: 50px;
-    width: 50%;
-    font-family: kufam;
-    color: red;
-    font-size: 1.5rem;
-    line-height: 1.6;
+
+  .about__side {
+    gap: 2.5rem;
   }
-  
-  .paragraph i {
-    font-style: italic;
+
+  .about__figure {
+    order: 3;
+    width: min(86%, 420px);
+    justify-self: center;
   }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .heading {
-      font-size: 2rem;
-      top: 20%;
-      right: 20px;
-      text-align: left;
-    }
-  
-    .paragraph {
-      width: 90%;
-      left: 20px;
-      bottom: 60px;
-    }
+
+}
+
+@media (max-width: 48em) {
+  .about__statement {
+    font-size: 8.5vw;
   }
-  
+}

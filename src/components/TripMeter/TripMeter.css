@@ -1,0 +1,60 @@
+/* The trip meter: scroll read as distance, landing on 1975.
+   Flat, no blur panel and no tracked micro-label — just the reading. */
+.trip {
+  position: fixed;
+  right: var(--margin);
+  bottom: var(--margin);
+  z-index: 500;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  background: var(--surface);
+  border-radius: var(--radius);
+  color: var(--ink);
+  font-family: var(--font-display);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.trip__read {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.trip__unit {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.trip__rail {
+  position: relative;
+  display: block;
+  width: 56px;
+  height: 2px;
+  background: rgba(236, 232, 217, 0.18);
+  overflow: hidden;
+}
+
+.trip__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (max-width: 48em) {
+  .trip {
+    padding: 0.45rem 0.7rem;
+  }
+
+  .trip__read {
+    font-size: 1rem;
+  }
+}

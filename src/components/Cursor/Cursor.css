@@ -1,0 +1,68 @@
+/* Only hide the system pointer once the custom one is actually running, so
+   touch users and a failed mount are never left with no cursor at all. */
+.has-cursor,
+.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor__ring,
+.cursor__dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9500;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor__ring {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  border: 1px solid rgba(255, 247, 217, 0.55);
+  border-radius: 50%;
+}
+
+.cursor__spin {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  overflow: visible;
+}
+
+.cursor__spin circle {
+  fill: none;
+  stroke: rgba(213, 63, 65, 0.85);
+  stroke-width: 2;
+  /* A broken rim, so the rotation is actually legible. */
+  stroke-dasharray: 10 26;
+  stroke-linecap: round;
+}
+
+.cursor__label {
+  color: #fff7d9;
+  font-family: "Kufam", sans-serif;
+  font-size: 0.52rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0;
+  white-space: nowrap;
+}
+
+.cursor__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #d53f41;
+  border-radius: 50%;
+}
+
+@media (pointer: coarse) {
+  .cursor__ring,
+  .cursor__dot {
+    display: none;
+  }
+}

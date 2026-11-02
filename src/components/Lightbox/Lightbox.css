@@ -1,0 +1,91 @@
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  /* display:none, not visibility:hidden — a hidden-but-present overlay puts
+     invisible text on the first screen, which fails the reduced-motion pass. */
+  display: none;
+  pointer-events: none;
+}
+
+.lb.is-open {
+  display: block;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.lb__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(18, 30, 15, 0.96);
+}
+
+/* Centred with auto margins, never with translate(-50%, -50%): GSAP owns the
+   transform on this element while Flip is flying it in, and a CSS translate
+   would be wiped out the moment the tween starts.
+   Every rule below is scoped under .lb purely to out-specify the classes the
+   clone brings with it — .img carries its own position, height and
+   aspect-ratio, and on equal specificity it would win on import order. */
+.lb .lb__item {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(86vw, 110rem);
+  height: min(84vh, 78rem);
+  overflow: hidden;
+  border-radius: 6px;
+  background-color: rgb(24, 35, 15);
+  aspect-ratio: auto;
+  cursor: pointer;
+}
+
+/* Whatever thumbnail was cloned — a featured figure or a masked gallery tile —
+   fills the frame once it gets here. The !important beats the inline transform
+   GSAP left on the original while animating it in the page. */
+.lb .lb__item img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  transform: none !important;
+}
+
+.lb .lb__item .mask {
+  clip-path: none !important;
+  transform: none !important;
+}
+
+.lb__meta,
+.lb__hint {
+  position: absolute;
+  z-index: 2;
+  color: #fff7d9;
+  font-family: "Kufam", sans-serif;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.lb__meta {
+  top: 4vh;
+  left: 5vw;
+  font-size: 1.3rem;
+  color: #d53f41;
+}
+
+.lb__hint {
+  bottom: 4vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.1rem;
+  opacity: 0.45;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .lb .lb__item {
+    width: 92vw;
+    height: 70vh;
+  }
+}

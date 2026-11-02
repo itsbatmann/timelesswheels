@@ -1,37 +1,121 @@
-@import url('https://fonts.googleapis.com/css?family=Afacad:regular,500,600,700,italic,500italic,600italic,700italic');
-@import url('https://fonts.googleapis.com/css?family=Alex+Brush');
+@import url('https://fonts.googleapis.com/css?family=Afacad:regular,500,600,700');
 
+/* The beige room. The one light field on the page, kept as the client had it:
+   warm ground, dark green ink, one centred paragraph, the script line carrying
+   the swash. One wire wheel is drawn behind it and nothing else. */
 .welcontainer {
-  background-color: #FFF7D9;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
+  --wel-ground: #fff7d9;
+  --wel-ink: rgb(24, 35, 15);
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  /* Deep enough that the wheel behind the copy has room to stand clear of
+     both edges rather than being cropped by them. */
+  padding: clamp(8rem, 19vw, 16rem) var(--margin);
+  background-color: var(--wel-ground);
+  color: var(--wel-ink);
   text-align: center;
+  overflow: hidden;
 }
 
-p {
-  font-size: clamp(1.5rem, 5vw, 3.5rem);
-  font-family: 'Afacad', sans-serif;
-  color: rgb(24, 35, 15);
-  max-width: 90%;
+/* One wheel, dead centre behind the words, faint enough that the copy never
+   has to compete with it. */
+.wel-wheel {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(16rem, 26vw, 26rem);
+  transform: translate(-50%, -50%);
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+.wel-wheel circle,
+.wel-wheel line {
+  fill: none;
+  stroke: var(--wel-ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* The tyre carries the weight, so it is the heaviest line on the drawing; the
+   spokes are the lightest. */
+.wel-wheel .wel-tyre {
+  stroke-width: 3.5;
+}
+
+.wel-wheel .wel-rim {
+  stroke-width: 2.2;
+}
+
+.wel-wheel .wel-tread line {
+  stroke-width: 2.4;
+}
+
+.wel-wheel .wel-spokes line {
+  stroke-width: 1;
+}
+
+.wel-wheel .wel-hub,
+.wel-wheel .wel-cap,
+.wel-wheel .wel-ears line {
+  stroke-width: 2.6;
+}
+
+.wel-copy {
+  position: relative;
+  max-width: min(100%, 1300px);
+  font-family: 'Afacad', var(--font-text);
+  font-size: clamp(1.375rem, 2.3vw, 2.125rem);
+  font-weight: 400;
   line-height: 1.5;
-  margin: 0;
+  color: var(--wel-ink);
 }
 
+/* Shrink-wrapped so its underline tracks the word, not the paragraph. The
+   preceding <br> still gives it its own row. */
 .craftsmanship {
-  font-family: 'Alex Brush', cursive;
-  font-weight: bold;
-  color: rgb(24, 35, 15);
-  display: block;
-  font-size: clamp(2rem, 6vw, 4rem);
-  margin-top: 0.5rem;
+  position: relative;
+  display: inline-block;
+  margin-top: 0.35em;
+  font-family: var(--font-script);
+  font-size: 1.05em;
+  line-height: 1.1;
+  color: var(--wel-ink);
 }
 
-/* Optional: tighter padding on small devices */
-@media (max-width: 480px) {
+.wel-swash {
+  position: absolute;
+  left: 50%;
+  bottom: -0.12em;
+  transform: translateX(-50%);
+  width: 94%;
+  height: 0.3em;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.wel-swash path {
+  fill: none;
+  stroke: #d53f41;
+  stroke-width: 3;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+@media (max-width: 48em) {
   .welcontainer {
-    padding: 10px;
+    padding-block: clamp(6rem, 24vw, 10rem);
+  }
+
+  .wel-copy {
+    max-width: 24ch;
+    font-size: 6vw;
+  }
+
+  .wel-wheel {
+    width: 78vw;
   }
 }

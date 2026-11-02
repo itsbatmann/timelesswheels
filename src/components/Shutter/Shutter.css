@@ -1,0 +1,23 @@
+.shutter {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.shutter__slat {
+  position: absolute;
+  left: -1px;
+  /* The extra pixel closes sub-pixel seams between slats while they are shut. */
+  width: calc(100% + 2px);
+  height: calc(100% / var(--slat-count) + 1px);
+  background-color: rgb(24, 35, 15);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* The route shutter floats above page content but below the preloader and the
+   cursor. */
+.shutter--route {
+  z-index: 7000;
+}

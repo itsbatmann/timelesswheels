@@ -1,0 +1,34 @@
+.reel {
+  display: inline-flex;
+  gap: 0.06em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.reel__slot {
+  position: relative;
+  display: block;
+  width: 0.62em;
+  height: 1em;
+  overflow: hidden;
+}
+
+/* 11 cells of 1em makes the strip exactly 11em tall, so one yPercent step of
+   100/11 translates by precisely one digit. */
+.reel__strip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  will-change: transform;
+}
+
+.reel__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1em;
+  line-height: 1;
+}

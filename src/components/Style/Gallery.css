@@ -1,58 +1,242 @@
-section {
-  width: 80%;
-  margin: 150px auto 0;
-  line-height: 0;
-  height: auto;
-  position: relative;
+/* The collection. Every photograph on the site lives in this one section, on a
+   rail that travels sideways while the section is pinned. Square corners
+   everywhere; nothing here is rounded and nothing here flashes. */
+
+.coll {
+  padding: var(--section) 0 calc(var(--section) * 0.6);
+  background: var(--bg);
 }
 
-section article {
-  position: relative;
-  width: 100%;
-  background-color: rgb(24, 35, 15);
+.coll__head {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
-  mix-blend-mode: lighten;
+  justify-items: start;
+  gap: 1rem;
+  max-width: 54rem;
+  padding: 0 var(--margin) clamp(2.5rem, 5vw, 4rem);
 }
 
-section article .img {
-  width: 100%;
-  aspect-ratio: 3 / 2; /* Maintain responsive ratio */
+.coll__title {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1.03;
+  max-width: 18ch;
+}
+
+.coll__line {
+  max-width: 44ch;
+  font-size: var(--step-body);
+  line-height: 1.55;
+}
+
+/* The pinned frame. Its height is the screen, so a plate is seen whole. */
+.coll__stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.coll__track {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.75rem, 4vw, 4rem);
+  padding: 0 var(--margin);
+  will-change: transform;
+}
+
+/* A plate: a ruled box, the picture, and its record line. On the rail the
+   pictures are sized by the height of the screen and take whatever width their
+   format then asks for, so a plate is seen whole and fills the frame. Two
+   formats on two lines is the whole of the rhythm. */
+.plate {
+  position: relative;
+  flex: 0 0 auto;
+  margin: 0;
+  align-self: flex-start;
+}
+
+.plate.is-tall {
+  align-self: flex-end;
+}
+
+.plate__box {
   position: relative;
 }
 
-section article .img .mask {
+/* The rule drawn round the box. It is the frame, so it sits over the picture
+   and is never thicker than a hairline. */
+.plate__rule {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.plate__rule rect {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.plate .img {
+  width: auto;
+  height: 58svh;
+  aspect-ratio: 4 / 3;
+}
+
+.plate.is-tall .img {
+  height: 72svh;
+  aspect-ratio: 3 / 4;
+}
+
+/* The record line: number, what it is, the year, the kind. */
+.plate__meta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 0 0.75rem;
+  padding-top: 0.85rem;
+}
+
+.plate__no {
+  font-family: var(--font-display);
+  font-size: var(--step-small);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.plate__name {
+  font-size: 1.0625rem;
+  line-height: 1.3;
+}
+
+.plate__year {
+  font-size: 1.0625rem;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.plate__kind {
+  grid-column: 2 / -1;
+  font-size: var(--step-small);
+  color: var(--muted);
+}
+
+/* How far along the collection you are, ruled the same way the frames are. */
+.coll__gauge {
   position: absolute;
-  background-size: cover;
-  background-position: center;
+  left: var(--margin);
+  right: var(--margin);
+  bottom: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-section article .img.span-two {
-  grid-column: span 2;
-  aspect-ratio: 5 / 2;
+.coll__count {
+  font-family: var(--font-display);
+  font-size: var(--step-small);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 
-/* Responsive styles */
-@media (max-width: 1024px) {
-  section article {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.coll__run {
+  flex: 1;
+  height: 1px;
+  overflow: visible;
+}
 
-  section article .img.span-two {
-    grid-column: span 2;
+/* No non-scaling-stroke here: the box is stretched along x only, and a dash
+   pattern held in screen units against a stretched path repeats instead of
+   running once. In user units it scales with the box, which is what a
+   progress line needs. */
+.coll__run line {
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+@media (min-width: 64.0625em) {
+  .coll__stage {
+    height: 100vh;
+    height: 100svh;
   }
 }
 
-@media (max-width: 600px) {
-  section article {
-    grid-template-columns: 1fr;
+/* Stacked below the rail's width: the same plates, down the page. */
+@media (max-width: 64em) {
+  .coll__stage {
+    display: block;
   }
 
-  section article .img.span-two {
-    grid-column: span 1;
-    aspect-ratio: 3 / 2;
+  .coll__track {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 3rem) clamp(1rem, 2.5vw, 1.75rem);
+    transform: none !important;
+  }
+
+  .plate,
+  .plate.is-tall {
+    width: 100%;
+    align-self: auto;
+  }
+
+  /* Sized by the page again, not by the screen. */
+  .plate .img,
+  .plate.is-tall .img {
+    width: 100%;
+    height: auto;
+  }
+
+  .plate.is-tall .img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .coll__gauge {
+    display: none;
+  }
+}
+
+@media (max-width: 48em) {
+  .coll__track {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .coll__title {
+    font-size: 8.5vw;
+  }
+}
+
+/* Without motion the rail cannot travel, so it never becomes one. */
+@media (prefers-reduced-motion: reduce) {
+  .coll__stage {
+    display: block;
+    height: auto;
+  }
+
+  .plate .img,
+  .plate.is-tall .img {
+    width: 100%;
+    height: auto;
+  }
+
+  .coll__track {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(2rem, 5vw, 3rem) clamp(1rem, 2.5vw, 1.75rem);
+    transform: none !important;
+  }
+
+  .plate,
+  .plate.is-tall {
+    width: 100%;
+    align-self: auto;
+  }
+
+  .coll__gauge {
+    display: none;
   }
 }

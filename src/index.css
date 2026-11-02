@@ -1,13 +1,253 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Timeless Wheels — foundation.
+   Direction: "The dark room" (tasteskill seed 263819723). One dark field runs
+   the whole page with no section bands; the photographs are the lit things.
+   Built on the skill's neutral base, with the dealt tokens filled in. */
+
+:root {
+  /* ---- colour: kept from the brand, darkened so photographs read as lit ---- */
+  --bg: #111a0b;      /* green-black ground, the whole page */
+  --surface: #1a2612; /* one tone step up, for panels and fields */
+  --ink: #e9e7dd;     /* soft light bone, never pure white or yellow cream */
+  --muted: #9aa189;   /* secondary ink — 6.7:1 on the ground */
+  /* The brand red (#d53f41) only reaches 3.9:1 on this ground, which fails for
+     anything at text size, so the accent is lifted to the same hue at 5.4:1.
+     It reads the same on the page and carries text both ways. */
+  --accent: #e8625f;
+  --accent-ink: #111a0b;
+  --paper: #e4e1d4;   /* the one light panel: the visit card */
+  --paper-ink: #1a2612;
+
+  /* The client's home screen is fixed and sets these two faces, so the whole
+     page uses them rather than the face the direction dealt. Two, no more. */
+  --font-display: "Kufam", system-ui, sans-serif;
+  --font-text: "Kufam", system-ui, sans-serif;
+  --font-script: "Alex Brush", cursive;
+
+  --step-small: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+  --step-body: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2rem, 1.3rem + 3.2vw, 4rem);
+  --step-display: clamp(2.25rem, 1.1rem + 3.4vw, 3.25rem);
+
+  --margin: clamp(1.25rem, 2.6vw, 2.5rem);
+  --gutter: clamp(1rem, 2vw, 2rem);
+  --section: clamp(4rem, 7vw, 6.5rem);
+  --radius: 0px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+  --t-press: 140ms;
+  --t-hover: 180ms;
+  --t-ui: 240ms;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* ---------------------------------------------------------------- reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--step-body);
+  font-weight: 400;
+  line-height: 1.55;
+  font-kerning: normal;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[class],
+ol[class] {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+video,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+  background: var(--surface);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:target {
+  scroll-margin-top: 6rem;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ----------------------------------------------------------------- type */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: -0.015em;
+  line-height: 1.0;
+  text-wrap: balance;
+  hyphens: none;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.tw-lead {
+  font-size: var(--step-lead);
+  line-height: 1.4;
+  max-width: 34ch;
+}
+
+.tw-small {
+  font-size: var(--step-small);
+  line-height: 1.5;
+}
+
+.tw-muted {
+  color: var(--muted);
+}
+
+.tw-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* --------------------------------------------------------------- layout */
+.tw-page {
+  width: 100%;
+  padding-inline: var(--margin);
+  margin-inline: auto;
+}
+
+/* ---------------------------------------------------------- the action */
+/* One shape for every button on the page: square, flat, filled. */
+.tw-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 1.5rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: var(--radius);
+  font-size: var(--step-body);
+  font-weight: 500;
+  transition: transform var(--t-press) var(--ease-out),
+    background-color var(--t-hover) var(--ease-out);
+}
+
+.tw-button:hover {
+  background: #f07b78;
+}
+
+.tw-button:active {
+  transform: translateY(1px);
+}
+
+.tw-link {
+  color: var(--ink);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: color var(--t-hover) var(--ease-out);
+}
+
+.tw-link:hover {
+  color: var(--accent);
+}
+
+/* ---------------------------------------------- smooth scroll (Lenis) */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

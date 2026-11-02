@@ -1,49 +1,76 @@
-.featured-container {
-    display: flex;
-    min-height: 130vh;
-    justify-content: center;
-    background-color: black;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-    flex-wrap: wrap;
+/* Showcase — "Portrait on its own ground".
+   Each chapter is its own full-bleed field, coloured from its photograph, with
+   the type pushed into the corners on the page margin. */
+
+.chapters {
+  display: block;
 }
 
+.chapter {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  min-height: 92svh;
+  padding: clamp(1.5rem, 3vw, 2rem) var(--margin);
+  will-change: transform;
+}
 
-.featured-img {
-    width: 100%; 
-    max-width: 500px; 
+.chapter__title {
+  justify-self: start;
+  max-width: 18ch;
+  font-size: clamp(1.75rem, 2.4vw, 2.25rem);
+  line-height: 1.05;
+}
+
+.chapter__figure {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  cursor: pointer;
+}
+
+.chapter__img {
+  width: auto;
+  height: min(70svh, 720px);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.chapter__line {
+  justify-self: start;
+  max-width: 34ch;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+/* Used where a heading is needed for structure but the chapter title already
+   does the visible work. */
+.tw-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 48em) {
+  .chapter__img {
+    width: 80%;
     height: auto;
-    max-height: 600px; 
-    object-fit: cover; 
-    border-radius: 10px;
-}
+  }
 
+  .chapter__title {
+    font-size: 1.5rem;
+  }
 
-@media (min-width: 768px) {
-    .featured-container {
-        flex-wrap: nowrap; 
-    }
-    .featured-img {
-        width: 48%;
-    }
-}
-
-
-@media (min-width: 1024px) {
-    .featured-img {
-        width: 45%;
-    }
-}
-
-@media (max-width: 768px) {
-    .featured-container {
-        flex-direction: column; 
-        align-items: center; 
-    }
-    .featured-img {
-        width: 90%;
-        height: auto;
-        max-height: 400px;
-    }
+  .chapter__line {
+    font-size: 1rem;
+  }
 }
