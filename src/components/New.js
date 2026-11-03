@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText, onlyWithMotion } from "../anim/gsap";
-import Rules from "./Rules";
 import "./Style/New.css";
 
 import workshopImg from "../Assets/download32.jpg";
@@ -135,7 +134,6 @@ const New = () => {
 
   return (
     <section className="about" id="about" ref={root}>
-      <Rules count={6} tone="dark" />
 
       <div className="about__inner">
         <header className="about__head">

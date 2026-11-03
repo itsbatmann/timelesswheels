@@ -2,7 +2,6 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "../anim/gsap";
 import MaskedImage from "./MaskedImage";
-import Rules from "./Rules";
 import "../components/Style/Gallery.css";
 
 import cars from "../Assets/Cars.jpg";
@@ -197,7 +196,6 @@ const Gallery = () => {
 
   return (
     <section className="coll" id="collection" ref={root}>
-      <Rules count={6} tone="dark" />
 
       <div className="coll__head">
         <h2 className="coll__title">Cars that were nearly scrapped</h2>
