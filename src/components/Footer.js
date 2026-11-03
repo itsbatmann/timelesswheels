@@ -1,16 +1,15 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText, onlyWithMotion } from "../anim/gsap";
-import Rules from "./Rules";
 import "./Style/Footer.css";
 
 /**
  * Footer — the last page of the record book.
  *
- * It stands on the same ruled sheet as the collection and the statement, and
- * closes the way those sections are set: the name stacked large in the left
- * columns with the details ruled beside it, and the legal line under
- * everything. Ground and ink invert, so the page ends on paper.
+ * The name is stacked large in the left columns with the details beside it,
+ * and the legal line sits under everything. Ground and ink invert, so the
+ * page ends on paper. No rules here: the sheet they are drawn on stops at
+ * the statement, and the last page is plain.
  *
  * The address, hours and telephone are sample content standing in for the
  * workshop's own.
@@ -92,8 +91,6 @@ const Footer = () => {
 
   return (
     <footer className="foot" ref={root}>
-      <Rules count={6} tone="light" />
-
       <h2 className="tw-visually-hidden">Timeless Wheels</h2>
 
       <div className="foot__sheet">
