@@ -1,13 +1,15 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, SplitText, onlyWithMotion } from "../anim/gsap";
+import Rules from "./Rules";
 import "./Style/Statement.css";
 
 /**
  * The founder's statement — the one place on the site where a person speaks.
  *
- * It is set as a letter: an opening quotation mark hung in the margin, the
- * quotation itself in a serif italic with its first line indented,
+ * It is set as a letter on ruled paper — the one section that keeps the
+ * rules: an opening quotation mark hung in the margin, the quotation itself
+ * in a serif italic with its first line indented,
  * then a rule, the signature and the name. The signature is a path, inked in
  * by DrawSVGPlugin at the speed a hand moves, after the words have arrived —
  * so the page is signed in front of you rather than showing a picture of a
@@ -80,6 +82,8 @@ const Statement = () => {
 
   return (
     <section className="stat" ref={root}>
+      <Rules count={6} tone="light" />
+
 
       <figure className="stat__card">
         <span className="stat__mark" aria-hidden="true">
