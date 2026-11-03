@@ -1,17 +1,23 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, onlyWithMotion } from "../anim/gsap";
+import { gsap, SplitText, onlyWithMotion } from "../anim/gsap";
+import Rules from "./Rules";
 import "./Style/Footer.css";
 
 /**
- * Footer — "Columns above, wordmark below".
+ * Footer — the last page of the record book.
  *
- * Ground and ink invert, four small columns sit at the top, and the name
- * returns at full width along the bottom as the close of the page.
+ * It stands on the same ruled sheet as the collection and the statement, and
+ * closes the way those sections are set: the name stacked large in the left
+ * columns with the details ruled beside it, and the legal line under
+ * everything. Ground and ink invert, so the page ends on paper.
+ *
+ * The address, hours and telephone are sample content standing in for the
+ * workshop's own.
  */
 const COLUMNS = [
   {
-    title: "Timeless Wheels",
+    title: "Workshop",
     lines: ["14 Hartwell Lane", "Dorset DT2 8QA", "United Kingdom"],
   },
   {
@@ -34,6 +40,26 @@ const Footer = () => {
   useGSAP(
     () => {
       onlyWithMotion(() => {
+        // The name is set in two lines; each is masked and brought up on its
+        // own, so the close has the weight of something being set in type.
+        const split = SplitText.create(".foot__word", {
+          type: "lines",
+          mask: "lines",
+          autoSplit: true,
+          onSplit: (self) =>
+            gsap.from(self.lines, {
+              yPercent: 115,
+              duration: 1.1,
+              ease: "ignition",
+              stagger: 0.09,
+              scrollTrigger: {
+                trigger: root.current,
+                start: "top 72%",
+                toggleActions: "play none none none",
+              },
+            }),
+        });
+
         gsap.from(".foot__col", {
           y: 20,
           autoAlpha: 0,
@@ -42,53 +68,61 @@ const Footer = () => {
           stagger: 0.07,
           scrollTrigger: {
             trigger: root.current,
-            start: "top 80%",
+            start: "top 78%",
             toggleActions: "play none none none",
           },
         });
-  
-        gsap.from(".foot__word", {
-          yPercent: 18,
+
+        gsap.from(".foot__legal", {
           autoAlpha: 0,
-          duration: 1.1,
-          ease: "ignition",
+          duration: 0.6,
+          ease: "none",
           scrollTrigger: {
-            trigger: root.current,
-            start: "top 55%",
+            trigger: ".foot__legal",
+            start: "top 96%",
             toggleActions: "play none none none",
           },
         });
-        });
+
+        return () => split.revert();
+      });
     },
     { scope: root }
   );
 
   return (
     <footer className="foot" ref={root}>
+      <Rules count={6} tone="light" />
+
       <h2 className="tw-visually-hidden">Timeless Wheels</h2>
 
-      <div className="foot__cols">
-        {COLUMNS.map((col) => (
-          <div className="foot__col" key={col.title}>
-            <p className="foot__col-title">{col.title}</p>
-            {col.lines.map((line) => (
-              <p className="foot__col-line" key={line}>
-                {line}
-              </p>
-            ))}
-          </div>
-        ))}
+      <div className="foot__sheet">
+        <p className="foot__word" aria-hidden="true">
+          Timeless
+          <br />
+          Wheels
+        </p>
+
+        <div className="foot__cols">
+          {COLUMNS.map((col) => (
+            <div className="foot__col" key={col.title}>
+              <p className="foot__col-title">{col.title}</p>
+              {col.lines.map((line) => (
+                <p className="foot__col-line" key={line}>
+                  {line}
+                </p>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="foot__close">
-        <p className="foot__word" aria-hidden="true">
-          Timeless Wheels
-        </p>
-        <p className="foot__legal">
-          Restoring classic cars and bikes since 1975. &copy;{" "}
-          {new Date().getFullYear()} Timeless Wheels.
-        </p>
-      </div>
+      <p className="foot__legal">
+        <span>
+          Restoring classic cars and bikes since 1975.
+        </span>
+        <span>&copy; {new Date().getFullYear()} Timeless Wheels.</span>
+      </p>
     </footer>
   );
 };

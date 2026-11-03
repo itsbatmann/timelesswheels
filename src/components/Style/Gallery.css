@@ -1,13 +1,15 @@
-/* The collection. Every photograph on the site lives in this one section, on a
-   rail that travels sideways while the section is pinned. Square corners
-   everywhere; nothing here is rounded and nothing here flashes. */
+/* The collection: a row of standing cards dealt past the screen, each with
+   its name set over the bottom-left corner. Square corners throughout. */
 
 .coll {
-  padding: var(--section) 0 calc(var(--section) * 0.6);
+  position: relative;
+  padding: var(--section) 0 calc(var(--section) * 0.7);
   background: var(--bg);
 }
 
 .coll__head {
+  position: relative;
+  z-index: 1;
   display: grid;
   justify-items: start;
   gap: 1rem;
@@ -27,105 +29,91 @@
   line-height: 1.55;
 }
 
-/* The pinned frame. Its height is the screen, so a plate is seen whole. */
+/* The pinned screen. The row sits in the middle of it with the gauge below. */
 .coll__stage {
   position: relative;
-  display: flex;
-  align-items: center;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  min-height: 100svh;
+  padding: 0 var(--margin) clamp(3.5rem, 7vw, 5.5rem);
   overflow: hidden;
+  /* The drum the row is wrapped round. The vanishing point sits at the
+     middle of the screen, which is what makes the centre card the one that
+     faces you. */
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
 }
 
 .coll__track {
   display: flex;
+  width: max-content;
+  /* Without this the cards are flattened into the track's own plane and the
+     perspective above has nothing to act on. */
+  transform-style: preserve-3d;
   align-items: center;
-  gap: clamp(1.75rem, 4vw, 4rem);
-  padding: 0 var(--margin);
+  gap: clamp(1rem, 2.2vw, 2rem);
+  /* Room for the lean: a tipped card needs more height than an upright one,
+     and this keeps its corners off the gauge and the heading. */
+  padding: clamp(1.5rem, 3vw, 3rem) 0;
   will-change: transform;
 }
 
-/* A plate: a ruled box, the picture, and its record line. On the rail the
-   pictures are sized by the height of the screen and take whatever width their
-   format then asks for, so a plate is seen whole and fills the frame. Two
-   formats on two lines is the whole of the rhythm. */
-.plate {
+/* ----------------------------------------------------------------- card */
+.card {
   position: relative;
   flex: 0 0 auto;
+  width: clamp(15rem, 23vw, 23rem);
   margin: 0;
-  align-self: flex-start;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
-.plate.is-tall {
-  align-self: flex-end;
-}
-
-.plate__box {
-  position: relative;
-}
-
-/* The rule drawn round the box. It is the frame, so it sits over the picture
-   and is never thicker than a hairline. */
-.plate__rule {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
+.card .img {
   width: 100%;
-  height: 100%;
-  overflow: visible;
+  height: min(62svh, 100svh - 260px);
+  aspect-ratio: auto;
+}
+
+/* The name sits on the photograph, so it carries its own ground: a scrim
+   from nothing to near-black, which holds the type over a light picture as
+   well as a dark one. */
+.card__label {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
+  display: grid;
+  gap: 0.3rem;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 1.6vw, 1.5rem)
+    clamp(1rem, 1.6vw, 1.4rem);
+  background: linear-gradient(
+    to top,
+    rgba(5, 10, 3, 0.78),
+    rgba(5, 10, 3, 0.5) 45%,
+    rgba(5, 10, 3, 0)
+  );
   pointer-events: none;
 }
 
-.plate__rule rect {
-  fill: none;
-  stroke: var(--muted);
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-}
-
-.plate .img {
-  width: auto;
-  height: 58svh;
-  aspect-ratio: 4 / 3;
-}
-
-.plate.is-tall .img {
-  height: 72svh;
-  aspect-ratio: 3 / 4;
-}
-
-/* The record line: number, what it is, the year, the kind. */
-.plate__meta {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: baseline;
-  gap: 0 0.75rem;
-  padding-top: 0.85rem;
-}
-
-.plate__no {
+.card__name {
+  max-width: 13ch;
   font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.9vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.12;
+  color: #fff;
+}
+
+.card__meta {
   font-size: var(--step-small);
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.72);
   font-variant-numeric: tabular-nums;
 }
 
-.plate__name {
-  font-size: 1.0625rem;
-  line-height: 1.3;
-}
-
-.plate__year {
-  font-size: 1.0625rem;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-
-.plate__kind {
-  grid-column: 2 / -1;
-  font-size: var(--step-small);
-  color: var(--muted);
-}
-
-/* How far along the collection you are, ruled the same way the frames are. */
+/* ---------------------------------------------------------------- gauge */
+/* Taken out of the stage's grid: the row beside it is thousands of pixels
+   wide, so as a grid item the gauge was stretched to the row's width and its
+   line ran far off the right of the screen. */
 .coll__gauge {
   position: absolute;
   left: var(--margin);
@@ -151,48 +139,37 @@
 
 /* No non-scaling-stroke here: the box is stretched along x only, and a dash
    pattern held in screen units against a stretched path repeats instead of
-   running once. In user units it scales with the box, which is what a
-   progress line needs. */
+   running once. In user units it scales with the box. */
 .coll__run line {
   stroke: var(--ink);
   stroke-width: 1;
 }
 
-@media (min-width: 64.0625em) {
-  .coll__stage {
-    height: 100vh;
-    height: 100svh;
-  }
-}
-
-/* Stacked below the rail's width: the same plates, down the page. */
+/* ------------------------------------------------- stacked, below the pin */
 @media (max-width: 64em) {
   .coll__stage {
     display: block;
+    min-height: 0;
+    overflow: visible;
   }
 
   .coll__track {
     display: grid;
+    width: auto;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2rem, 5vw, 3rem) clamp(1rem, 2.5vw, 1.75rem);
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    padding: 0;
     transform: none !important;
   }
 
-  .plate,
-  .plate.is-tall {
+  .card {
     width: 100%;
-    align-self: auto;
+    transform: none !important;
   }
 
-  /* Sized by the page again, not by the screen. */
-  .plate .img,
-  .plate.is-tall .img {
-    width: 100%;
+  .card .img {
     height: auto;
-  }
-
-  .plate.is-tall .img {
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 4;
   }
 
   .coll__gauge {
@@ -201,39 +178,47 @@
 }
 
 @media (max-width: 48em) {
-  .coll__track {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .coll__title {
     font-size: 8.5vw;
   }
 }
 
-/* Without motion the rail cannot travel, so it never becomes one. */
+/* One up only once two would be too narrow to read a photograph in. */
+@media (max-width: 40em) {
+  .coll__track {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .card .img {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Without motion the row cannot travel, so it never becomes one. */
 @media (prefers-reduced-motion: reduce) {
   .coll__stage {
     display: block;
-    height: auto;
-  }
-
-  .plate .img,
-  .plate.is-tall .img {
-    width: 100%;
-    height: auto;
+    min-height: 0;
+    overflow: visible;
   }
 
   .coll__track {
     display: grid;
+    width: auto;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(2rem, 5vw, 3rem) clamp(1rem, 2.5vw, 1.75rem);
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+    padding: 0;
     transform: none !important;
   }
 
-  .plate,
-  .plate.is-tall {
+  .card {
     width: 100%;
-    align-self: auto;
+    transform: none !important;
+  }
+
+  .card .img {
+    height: auto;
+    aspect-ratio: 3 / 4;
   }
 
   .coll__gauge {

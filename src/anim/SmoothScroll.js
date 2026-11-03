@@ -36,6 +36,11 @@ export const SmoothScrollProvider = ({ children }) => {
 
     instance.on("scroll", ScrollTrigger.update);
 
+    // index.js has already put the window at the top; Lenis keeps its own
+    // position and would otherwise start from whatever it reads, so it is
+    // told to begin at the top as well, without animating there.
+    instance.scrollTo(0, { immediate: true, force: true });
+
     const tick = (time) => instance.raf(time * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);

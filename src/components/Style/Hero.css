@@ -47,6 +47,11 @@
   padding: 0;
 }
 
+/* The name is one word and is never broken across lines. */
+.title-word {
+  white-space: nowrap;
+}
+
 
 .timeless {
   font-size: 7vw;
@@ -114,6 +119,10 @@
   }
 }
 
+/* On a phone the two halves cannot stand side by side: each gets about
+   half the screen, and "Timeless" breaks across two lines at any size worth
+   setting it at. They stack instead — same two blocks, same treatment, each
+   now with the full width to itself, which is what lets the type stay big. */
 @media (max-width: 48em) {
   .container {
     height: auto;
@@ -122,16 +131,23 @@
   }
 
   .content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(1.5rem, 6vw, 3rem);
     padding: 0 1.25rem;
+  }
+
+  .title {
+    align-items: flex-start;
   }
 
   .left .title,
   .timeless,
   .right.wheels p {
-    font-size: 13vw;
+    font-size: 15vw;
   }
 
   .since-year {
-    font-size: 5.2vw;
+    font-size: 6vw;
   }
 }

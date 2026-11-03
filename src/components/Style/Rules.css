@@ -1,0 +1,31 @@
+/* The ruled sheet behind the closing sections. It fills its section, and the
+   rules divide that full width into equal columns. */
+.rules {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rules__line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.rules--dark .rules__line {
+  background: rgba(233, 231, 221, 0.1);
+}
+
+.rules--light .rules__line {
+  background: rgba(26, 38, 18, 0.11);
+}
+
+/* Four columns of rule on a phone is noise at that width; the outer pair go. */
+@media (max-width: 48em) {
+  .rules__line:first-child,
+  .rules__line:last-child {
+    display: none;
+  }
+}

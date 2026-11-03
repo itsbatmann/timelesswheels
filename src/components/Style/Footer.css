@@ -1,20 +1,44 @@
-/* Footer — "Columns above, wordmark below".
-   Ground and ink invert, and the name returns at full width to close. */
+/* Footer — the last page of the record book. The name stacked large in the
+   left columns of the ruled sheet, the details ruled beside it. Ground and
+   ink invert, so the page ends on paper. */
 
 .foot {
+  position: relative;
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  min-height: 78svh;
-  padding: clamp(2rem, 4vw, 3rem) var(--margin);
+  align-content: space-between;
+  gap: clamp(3rem, 8vw, 7rem);
+  /* No forced screen height: at 82svh the columns finished a third of the way
+     down and left a dead band above the legal line. */
+  padding: clamp(3.5rem, 7vw, 6rem) var(--margin) clamp(1.5rem, 3vw, 2.5rem);
   background: var(--paper);
   color: var(--paper-ink);
 }
 
+.foot__sheet {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: start;
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+/* Two lines, set as large as the left columns will carry. */
+.foot__word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7.6vw, 8rem);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+}
+
 .foot__cols {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--gutter);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
   align-content: start;
+  padding-top: 0.6rem;
 }
 
 .foot__col-title {
@@ -29,43 +53,52 @@
   line-height: 1.6;
   /* A readable step down from the title, not a fade. */
   color: #333b2b;
-}
-
-.foot__close {
-  align-self: end;
-}
-
-/* The name runs from margin to margin on one line. */
-.foot__word {
-  font-family: var(--font-display);
-  /* Sized to clear both margins at every width: any larger and the
-     wordmark overflows the page and drags the whole footer grid off-centre. */
-  font-size: 11vw;
-  font-weight: 400;
-  line-height: 0.85;
-  letter-spacing: -0.03em;
-  white-space: nowrap;
+  /* The email address is one unbreakable word wider than a narrow column, so
+     it is allowed to break rather than run out past the margin. */
+  overflow-wrap: anywhere;
 }
 
 .foot__legal {
-  padding-top: 1.25rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.25rem;
+  margin: 0;
   font-size: 0.8125rem;
   color: #4a5440;
+}
+
+@media (max-width: 64em) {
+  .foot__sheet {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .foot__word {
+    font-size: clamp(3rem, 11vw, 7rem);
+  }
 }
 
 @media (max-width: 48em) {
   .foot {
     min-height: 0;
-    gap: 20svh;
-  }
-
-  .foot__cols {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 2rem var(--gutter);
+    gap: clamp(3rem, 12svh, 6rem);
   }
 
   .foot__word {
-    font-size: 13vw;
-    white-space: normal;
+    font-size: 15vw;
+  }
+}
+
+@media (max-width: 30em) {
+  .foot__cols {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem;
+  }
+
+  /* One step down keeps the email address on a single line at 320px rather
+     than breaking a letter onto its own row. */
+  .foot__col-line {
+    font-size: 0.9375rem;
   }
 }

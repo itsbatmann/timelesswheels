@@ -47,10 +47,12 @@
 }
 
 /* ----------------------------------------------------------------- stage */
+/* The car is drawn smaller than the screen it is drawn on: at full width the
+   line art reads as a diagram, and held back it reads as a drawing. */
 .pre__stage {
   position: relative;
   z-index: 4;
-  width: min(94%, 108rem);
+  width: min(72%, 58rem);
   aspect-ratio: 960 / 320;
 }
 
@@ -109,6 +111,6 @@
 
 @media (max-width: 760px) {
   .pre__stage {
-    width: 96%;
+    width: 88%;
   }
 }

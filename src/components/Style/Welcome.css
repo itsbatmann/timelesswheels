@@ -10,9 +10,11 @@
   position: relative;
   display: grid;
   place-items: center;
-  /* Deep enough that the wheel behind the copy has room to stand clear of
-     both edges rather than being cropped by them. */
-  padding: clamp(8rem, 19vw, 16rem) var(--margin);
+  /* A full screen of beige: the one light field on the page gets a screen of
+     its own, with the copy and the wheel centred in it. The padding stays as
+     the floor for the case where the screen is shorter than the content. */
+  min-height: 100svh;
+  padding: clamp(6rem, 14vw, 12rem) var(--margin);
   background-color: var(--wel-ground);
   color: var(--wel-ink);
   text-align: center;
@@ -25,7 +27,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  width: clamp(16rem, 26vw, 26rem);
+  width: clamp(17rem, 31vw, 32rem);
   transform: translate(-50%, -50%);
   opacity: 0.16;
   pointer-events: none;

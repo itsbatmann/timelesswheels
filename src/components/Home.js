@@ -1,23 +1,23 @@
 import Hero from "./Hero";
 import Welcome from "./Welcome";
 import Gallery from "./Gallery";
+import Statement from "./Statement";
 import New from "./New";
 import Footer from "./Footer";
 
 /**
- * The page. The hero and the footer are the client's and are left alone; the
- * beige room, the collection and the workshop story sit between them.
+ * The page. The hero and the beige room open it; from the collection on, it is
+ * set on one ruled sheet — the record book — which the statement and the
+ * footer stand on too, so the closing stretch reads as one document.
  *
- * Every photograph on the site lives in the one collection section, so the
- * page has a single place where the work is shown. The velocity skew that used
- * to lean the pictures into the scroll was taken off them: in a section this
- * quiet it was the one showy thing left.
+ * Every photograph on the site lives in the one collection section.
  */
 const Home = () => (
   <div>
     <Hero />
     <Welcome />
     <Gallery />
+    <Statement />
     <New />
     <Footer />
   </div>

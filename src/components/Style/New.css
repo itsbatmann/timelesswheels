@@ -1,96 +1,225 @@
-/* About — "Inset panel, shaped portrait".
-   One deep-toned panel inset from the page edges, the photograph masked to a
-   single bold shape and cropped by the panel's bottom edge. */
+/* The workshop — a plate in a catalogue of the period, standing on the same
+   ruled sheet as the collection, the statement and the footer. Square
+   corners, no panels, no tints; the only colour is on the numerals. */
 
 .about {
+  position: relative;
   padding: var(--section) var(--margin);
   background: var(--bg);
 }
 
-.about__panel {
+.about__inner {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
-  align-content: start;
-  gap: clamp(2rem, 4vw, 3.5rem) clamp(2rem, 5vw, 6rem);
-
-  padding: clamp(2rem, 4vw, 3.5rem);
-  background: var(--surface);
-  border-radius: var(--radius);
-  overflow: hidden;
+  z-index: 1;
 }
 
-.about__statement {
-  grid-column: 1;
-  align-self: start;
-  max-width: 14ch;
-  font-size: clamp(2rem, 4.4vw, 3.5rem);
+.about__head {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.about__title {
+  max-width: 13ch;
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-size: clamp(2.5rem, 6vw, 5.25rem);
+  font-weight: 400;
   line-height: 1.02;
 }
 
-/* The arch: one bold shape taken from a wheel arch, which is the shape this
-   workshop spends its days rebuilding. */
-.about__figure {
-  grid-column: 1;
-  align-self: start;
-  width: min(38vw, 420px);
-  margin: 0;
+.about__lead {
+  max-width: 34ch;
+  padding-bottom: 0.5rem;
+  font-size: var(--step-body);
+  line-height: 1.55;
+  color: var(--muted);
 }
 
+/* The plate is given a fixed measure rather than a share of the page: at
+   seven twelfths of this width it stood nearly twice the height of the notes
+   beside it and left the right-hand column half empty. */
+.about__spread {
+  display: grid;
+  grid-template-columns: minmax(0, 30rem) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2.5rem, 6vw, 6rem);
+}
+
+/* --------------------------------------------------------------- plate */
+.about__figure {
+  position: relative;
+  margin: 0;
+  /* Room for the mount to stand outside the picture. */
+  padding: clamp(1rem, 1.6vw, 1.5rem);
+}
+
+.about__mount {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* The viewBox is stretched to the figure, so the stroke is given in user
+   units and not held in screen units: a dash pattern in screen units against
+   a stretched path repeats instead of running once round. */
+.about__mount rect {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 0.6;
+}
+
+.about__media {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+}
+
+/* Taller than its opening, so it can drift without showing an edge. */
 .about__img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 112%;
   object-fit: cover;
-  border-radius: 0;
+  display: block;
 }
 
-.about__side {
-  grid-column: 2;
-  align-self: start;
+.about__cap {
+  padding-top: 0.85rem;
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-size: 1.0625rem;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------- notes */
+/* Held to the measure of its own copy, so the margin rules end with the
+   text rather than running on to the edge of the column. */
+.about__notes {
   display: grid;
-  gap: 4rem;
-  justify-items: start;
-  padding-top: 0.5rem;
+  max-width: 42rem;
+  gap: clamp(2.5rem, 4vw, 3.5rem);
+  margin: 0;
+  padding: clamp(0.5rem, 1.5vw, 1.5rem) 0 0;
+  list-style: none;
+  counter-reset: none;
 }
 
-.about__sub {
-  font-size: 1.375rem;
-  line-height: 1.15;
+.note {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0 1.25rem;
+}
+
+.note__num {
+  grid-row: 1 / 3;
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--accent);
+}
+
+/* The margin rule, ruled in beside the numeral. */
+.note__rule {
+  grid-column: 2;
+  width: 100%;
+  height: 1px;
+  margin-bottom: 1rem;
+  overflow: visible;
+}
+
+.note__rule line {
+  stroke: var(--muted);
+  stroke-width: 1;
+}
+
+.note__body {
+  grid-column: 2;
+}
+
+.note__head {
+  font-size: clamp(1.25rem, 1.7vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.2;
   padding-bottom: 0.6rem;
 }
 
-.about__copy {
-  max-width: 34ch;
+.note__copy {
+  max-width: 38ch;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------- action */
+.about__ask {
+  padding-left: 4rem;
+}
+
+/* A ruled box, not a slab of colour: it fills on hover rather than shouting
+   on the page. */
+.about__action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 1.6rem;
+  border: 1px solid var(--ink);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--step-small);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color var(--t-hover) var(--ease-out),
+    color var(--t-hover) var(--ease-out);
+}
+
+.about__action:hover,
+.about__action:focus-visible {
+  background: var(--ink);
+  color: var(--bg);
 }
 
 @media (max-width: 64em) {
-  .about__panel {
+  .about__head,
+  .about__spread {
     grid-template-columns: minmax(0, 1fr);
-    min-height: 0;
   }
 
-  .about__statement,
-  .about__figure,
-  .about__side {
-    grid-column: 1;
-  }
-
-  .about__side {
-    gap: 2.5rem;
+  .about__lead {
+    padding-bottom: 0;
   }
 
   .about__figure {
-    order: 3;
-    width: min(86%, 420px);
-    justify-self: center;
+    max-width: 34rem;
   }
-
 }
 
 @media (max-width: 48em) {
-  .about__statement {
-    font-size: 8.5vw;
+  .about__title {
+    font-size: 10vw;
+  }
+
+  .note {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0 0.9rem;
+  }
+
+  .note__num {
+    font-size: 1.375rem;
+  }
+
+  .about__ask {
+    padding-left: 0;
+  }
+
+  .about__action {
+    width: 100%;
+    justify-content: center;
   }
 }

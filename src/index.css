@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,400;1,500&display=swap');
+
 /* Timeless Wheels — foundation.
    Direction: "The dark room" (tasteskill seed 263819723). One dark field runs
    the whole page with no section bands; the photographs are the lit things.
@@ -22,6 +24,9 @@
   --font-display: "Kufam", system-ui, sans-serif;
   --font-text: "Kufam", system-ui, sans-serif;
   --font-script: "Alex Brush", cursive;
+  /* One serif, used for one thing: the founder's statement, which is the only
+     place on the site where a person speaks in their own voice. */
+  --font-quote: "EB Garamond", Georgia, "Times New Roman", serif;
 
   --step-small: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
   --step-body: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem);

@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "../anim/gsap";
 import MaskedImage from "./MaskedImage";
+import Rules from "./Rules";
 import "../components/Style/Gallery.css";
 
 import cars from "../Assets/Cars.jpg";
@@ -16,30 +17,30 @@ import rover from "../Assets/rover.jpg";
 /**
  * The collection — every photograph on the site, in this one section.
  *
- * It is laid out as a road rather than a grid: the section pins and the plates
- * travel past sideways, each one a square-cornered box on one of two lines, so
- * the rail reads like cars parked along a kerb instead of a flat matrix.
+ * A row of standing cards that travels sideways while the section is pinned.
+ * Each card is a full-bleed photograph with its name set over the bottom-left
+ * corner.
  *
- * The reveal is deliberately quiet, and it is all DrawSVGPlugin: a hairline
- * rectangle draws itself around the box, corner to corner, and the photograph
- * wipes up inside it once the line has gone round. No flashes, no shuffling
- * panels — the frame is ruled first and the picture is set into it, which is
- * the order a plate in a record book is made in.
+ * Standing still, the row is a flat straight line. The moment you scroll it
+ * wraps round a drum lying on its side, with the near face of the drum at the
+ * middle of the screen: the middle card stays square to you and closest, and
+ * towards either edge the cards turn away, fall back and drop. The faster you
+ * scroll the deeper it wraps, and it eases flat again when you stop.
  *
- * Below 64em, and wherever motion is not wanted, the same plates stack and the
- * same reveal runs on the page's own scroll.
+ * Below 64em, and wherever motion is not wanted, the same cards stack with no
+ * lean at all.
  *
  * Makes and years are sample content standing in for the workshop's records.
  */
 const PIECES = [
   { src: cars, kind: "Car", title: "Fastback, re-shelled", year: 1967 },
-  { src: amc, kind: "Car", title: "AMC, two-door", year: 1969, tall: true },
+  { src: amc, kind: "Car", title: "AMC, two-door", year: 1969 },
   { src: bik, kind: "Motorcycle", title: "Tank, hand-painted", year: 1958 },
-  { src: berlin, kind: "Car", title: "Berlin, kerbside", year: 1964, tall: true },
+  { src: berlin, kind: "Car", title: "Berlin, kerbside", year: 1964 },
   { src: engine, kind: "Engine", title: "Rebuilt straight six", year: 1971 },
-  { src: d32, kind: "Car", title: "Door, re-skinned", year: 1967, tall: true },
+  { src: d32, kind: "Car", title: "Door, re-skinned", year: 1967 },
   { src: rover, kind: "Car", title: "Saloon, long chassis", year: 1954 },
-  { src: d24, kind: "Motorcycle", title: "Frame, re-brazed", year: 1954, tall: true },
+  { src: d24, kind: "Motorcycle", title: "Frame, re-brazed", year: 1954 },
 ];
 
 const pad = (n) => String(n).padStart(2, "0");
@@ -53,47 +54,10 @@ const Gallery = () => {
 
   useGSAP(
     () => {
-      const plates = gsap.utils.toArray(".plate", root.current);
-
-      // One plate: the rule goes round, then the picture wipes up inside it.
-      // `container` is the sideways tween when there is one — that is what
-      // lets ScrollTrigger measure a horizontal position against the page's
-      // vertical scroll.
-      const reveal = (plate, container) => {
-        const tl = gsap.timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: container
-            ? {
-                trigger: plate,
-                containerAnimation: container,
-                start: "left 95%",
-                end: "left 45%",
-                scrub: true,
-              }
-            : {
-                trigger: plate,
-                start: "top 90%",
-                end: "top 45%",
-                scrub: true,
-              },
-        });
-
-        tl.fromTo(
-          plate.querySelector(".plate__rule rect"),
-          { drawSVG: "0%" },
-          { drawSVG: "100%", duration: 0.65 }
-        ).fromTo(
-          plate.querySelector(".img"),
-          { clipPath: "inset(100% 0% 0% 0%)" },
-          { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: "power2.out" },
-          "-=0.18"
-        );
-      };
+      const cards = gsap.utils.toArray(".card", root.current);
 
       const mm = gsap.matchMedia();
 
-      // The rail. Desktop, and only where motion is wanted: a pin is itself a
-      // motion effect, so it has no business running under reduced motion.
       mm.add(
         "(min-width: 64.0625em) and (prefers-reduced-motion: no-preference)",
         () => {
@@ -102,7 +66,10 @@ const Gallery = () => {
 
           gsap.set(runRef.current, { drawSVG: "0%" });
 
-          const drive = gsap.to(track.current, {
+          // The row's travel. Nothing is keyed off this tween any more — the
+          // curve is read from where each card actually is — so it is not
+          // kept.
+          gsap.to(track.current, {
             x: () => -distance(),
             ease: "none",
             scrollTrigger: {
@@ -113,13 +80,9 @@ const Gallery = () => {
               end: () => "+=" + distance(),
               invalidateOnRefresh: true,
               onUpdate: (self) => {
-                // The gauge is drawn too, so the one moving line in this
-                // section is made the same way as the frames.
-                if (runRef.current) {
-                  gsap.set(runRef.current, {
-                    drawSVG: `0% ${(self.progress * 100).toFixed(2)}%`,
-                  });
-                }
+                gsap.set(runRef.current, {
+                  drawSVG: `0% ${(self.progress * 100).toFixed(2)}%`,
+                });
                 if (countRef.current) {
                   const n = Math.min(
                     PIECES.length,
@@ -131,21 +94,87 @@ const Gallery = () => {
             },
           });
 
-          plates.forEach((plate) => reveal(plate, drive));
+          // ---- the curve ------------------------------------------------
+          // The row is wrapped round a drum lying on its side, with the near
+          // face of the drum at the middle of the screen. A card in the
+          // middle is square to you and closest; towards either edge it is
+          // turned away, pushed back and dropped, so the row bulges out of
+          // the page at the centre and falls away at the sides.
+          //
+          // n is where the card sits across the screen: -1 at the left edge,
+          // 0 in the middle, 1 at the right. The turn goes as n, which is
+          // the angle round the drum; the depth and the drop go as n
+          // squared, which is the drum's surface. Nothing here is a loop —
+          // it is read from the card's real position, so the same scroll
+          // position always gives the same shape.
+          //
+          // On top of that, the whole curve deepens while the page is being
+          // scrolled and eases back when it stops, so it answers the scroll
+          // as well as describing it.
+          const TURN = 30; // degrees at the screen edge, at full speed
+          const DEPTH = 230; // pixels pushed back at the edge, at full speed
+          const DROP = 54; // pixels fallen at the edge, at full speed
 
-          return () => ScrollTrigger.refresh();
+          const setters = cards.map((card) => ({
+            card,
+            y: gsap.quickSetter(card, "y", "px"),
+            z: gsap.quickSetter(card, "z", "px"),
+            rotationY: gsap.quickSetter(card, "rotationY", "deg"),
+          }));
+
+          const bend = { amount: 0 };
+          const clamp = gsap.utils.clamp(-1, 1);
+
+          const place = () => {
+            const half = window.innerWidth / 2;
+            // Nothing at rest: every term is scaled by how hard the page is
+            // being scrolled, so the drum only exists while you are moving.
+            const k = Math.abs(bend.amount);
+            setters.forEach((s) => {
+              const r = s.card.getBoundingClientRect();
+              // Clamped to the screen's own edges: the row runs well past
+              // them, and squaring an n of 4 would throw the far cards
+              // hundreds of pixels back instead of continuing the curve.
+              const n = clamp((r.left + r.width / 2 - half) / half);
+              const a = n * n;
+              s.rotationY(n * TURN * k);
+              s.z(-a * DEPTH * k);
+              s.y(a * DROP * k);
+            });
+          };
+
+          const flex = (self) => {
+            const v = clamp(self.getVelocity() / 2600);
+            // Only ever take the deeper bow, then always relax back to flat.
+            // That asymmetry is what makes it answer an impulse and settle
+            // smoothly, instead of jittering with every velocity reading.
+            if (Math.abs(v) > Math.abs(bend.amount)) {
+              bend.amount = v;
+              gsap.to(bend, {
+                amount: 0,
+                duration: 0.9,
+                ease: "power3",
+                overwrite: true,
+                onUpdate: place,
+              });
+            }
+            place();
+          };
+
+          // The row also moves under its own pin, so the bend is recomputed
+          // on that scroll as well as on the page's.
+          const velocity = ScrollTrigger.create({ onUpdate: flex });
+
+          place();
+
+          return () => {
+            velocity.kill();
+            gsap.set(cards, { clearProps: "y,z,rotationY" });
+            ScrollTrigger.refresh();
+          };
         }
       );
 
-      // Stacked, on a phone or a tablet.
-      mm.add(
-        "(max-width: 64em) and (prefers-reduced-motion: no-preference)",
-        () => {
-          plates.forEach((plate) => reveal(plate, null));
-        }
-      );
-
-      // The heading arrives at both widths, and not at all without motion.
       mm.add("(prefers-reduced-motion: no-preference)", () => {
         gsap.from(".coll__head > *", {
           y: 24,
@@ -168,6 +197,8 @@ const Gallery = () => {
 
   return (
     <section className="coll" id="collection" ref={root}>
+      <Rules count={6} tone="dark" />
+
       <div className="coll__head">
         <h2 className="coll__title">Cars that were nearly scrapped</h2>
         <p className="coll__line">
@@ -178,37 +209,25 @@ const Gallery = () => {
       <div className="coll__stage" ref={stage}>
         <div className="coll__track" ref={track}>
           {PIECES.map((p, i) => (
-            <figure className={`plate${p.tall ? " is-tall" : ""}`} key={p.title}>
-              <div className="plate__box">
-                {/* The rule. It is drawn round the box before the picture
-                    arrives, and stays as the frame afterwards. */}
-                <svg
-                  className="plate__rule"
-                  viewBox={p.tall ? "0 0 300 400" : "0 0 400 300"}
-                  aria-hidden="true"
-                >
-                  <rect
-                    x="0.5"
-                    y="0.5"
-                    width={p.tall ? 299 : 399}
-                    height={p.tall ? 399 : 299}
-                  />
-                </svg>
+            <figure className="card" key={p.title}>
+              <MaskedImage
+                src={p.src}
+                alt={`${p.title}, ${p.year}`}
+                index={i}
+                group="Collection"
+                manual
+              />
 
-                <MaskedImage
-                  src={p.src}
-                  alt={`${p.title}, ${p.year}`}
-                  index={i}
-                  group="Collection"
-                  manual
-                />
-              </div>
-
-              <figcaption className="plate__meta">
-                <span className="plate__no">{pad(i + 1)}</span>
-                <span className="plate__name">{p.title}</span>
-                <span className="plate__year">{p.year}</span>
-                <span className="plate__kind">{p.kind}</span>
+              <figcaption className="card__label">
+                {/* Non-breaking hyphens: at this measure a browser will break
+                    "re-shelled" after the hyphen and leave "shelled" alone on
+                    the second line, which reads as a typo. */}
+                <span className="card__name">
+                  {p.title.replace(/-/g, "‑")}
+                </span>
+                <span className="card__meta">
+                  {p.kind} · {p.year}
+                </span>
               </figcaption>
             </figure>
           ))}
