@@ -45,7 +45,73 @@
   perspective-origin: 50% 50%;
 }
 
+/* ------------------------------------------------- what is behind the row */
+/* Three planes at three speeds: the name far off, the cards, the road
+   underfoot. None of it is read; all of it is held well under the
+   photographs. */
+.coll__back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* The name of the place, set outsize and hollow, a long way behind. */
+/* Set high in the frame rather than behind the middle of the row: centred, it
+   was covered by the cards and only showed through the gaps, which reads as
+   noise instead of a word. Up here its top half stands clear above them. */
+.coll__ghost {
+  position: absolute;
+  top: 7%;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: 15vw;
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(233, 231, 221, 0.085);
+}
+
+/* The road: one verge, and the centre markings running past under the deck. */
+.coll__road {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16%;
+  height: 2px;
+}
+
+.road__verge {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: rgba(233, 231, 221, 0.1);
+}
+
+.road__dashes {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  display: flex;
+  gap: 110px;
+  width: max-content;
+  will-change: transform;
+}
+
+.road__dash {
+  flex: 0 0 auto;
+  width: 70px;
+  height: 2px;
+  background: rgba(233, 231, 221, 0.13);
+}
+
 .coll__track {
+  position: relative;
   display: flex;
   width: max-content;
   /* Without this the cards are flattened into the track's own plane and the
@@ -147,6 +213,10 @@
 
 /* ------------------------------------------------- stacked, below the pin */
 @media (max-width: 64em) {
+  .coll__back {
+    display: none;
+  }
+
   .coll__stage {
     display: block;
     min-height: 0;
@@ -196,6 +266,10 @@
 
 /* Without motion the row cannot travel, so it never becomes one. */
 @media (prefers-reduced-motion: reduce) {
+  .coll__back {
+    display: none;
+  }
+
   .coll__stage {
     display: block;
     min-height: 0;

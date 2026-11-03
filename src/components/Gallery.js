@@ -50,6 +50,8 @@ const Gallery = () => {
   const track = useRef(null);
   const countRef = useRef(null);
   const runRef = useRef(null);
+  const ghost = useRef(null);
+  const road = useRef(null);
 
   useGSAP(
     () => {
@@ -124,6 +126,22 @@ const Gallery = () => {
           const bend = { amount: 0 };
           const clamp = gsap.utils.clamp(-1, 1);
 
+          // ---- what is behind the row ------------------------------------
+          // Three planes, each moving at its own speed, which is what makes
+          // the row read as being driven past rather than slid along.
+          //
+          //   the name    a long way off, so it barely moves
+          //   the cards   the row itself
+          //   the road    underfoot, so it goes by faster than anything
+          //
+          // The dashes are wrapped over one pitch, so the road repeats
+          // seamlessly however far the row travels.
+          const DASH_PITCH = 180;
+          const setGhost = gsap.quickSetter(ghost.current, "x", "px");
+          const setRoad = gsap.quickSetter(road.current, "x", "px");
+          const wrapDash = gsap.utils.wrap(-DASH_PITCH, 0);
+          const trackX = () => gsap.getProperty(track.current, "x");
+
           const place = () => {
             const half = window.innerWidth / 2;
             // Nothing at rest: every term is scaled by how hard the page is
@@ -140,6 +158,10 @@ const Gallery = () => {
               s.z(-a * DEPTH * k);
               s.y(a * DROP * k);
             });
+
+            const x = trackX();
+            setGhost(x * 0.28);
+            setRoad(wrapDash(x * 1.7));
           };
 
           const flex = (self) => {
@@ -169,6 +191,7 @@ const Gallery = () => {
           return () => {
             velocity.kill();
             gsap.set(cards, { clearProps: "y,z,rotationY" });
+            gsap.set([ghost.current, road.current], { clearProps: "x" });
             ScrollTrigger.refresh();
           };
         }
@@ -205,6 +228,23 @@ const Gallery = () => {
       </div>
 
       <div className="coll__stage" ref={stage}>
+        {/* The road the deck is driven along, and the name of the place a
+            long way behind it. Both are set faint; neither is ever read. */}
+        <div className="coll__back" aria-hidden="true">
+          <p className="coll__ghost" ref={ghost}>
+            Timeless Wheels
+          </p>
+
+          <div className="coll__road">
+            <span className="road__verge" />
+            <div className="road__dashes" ref={road}>
+              {Array.from({ length: 30 }, (_, i) => (
+                <span className="road__dash" key={i} />
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="coll__track" ref={track}>
           {PIECES.map((p, i) => (
             <figure className="card" key={p.title}>
