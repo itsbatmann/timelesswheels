@@ -162,15 +162,24 @@
     padding-block: clamp(3rem, 10svh, 5rem);
   }
 
+  /* Stacked, the two halves are centred on the screen rather than hung off
+     the left edge: there is no second column to balance them against. */
   .content {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: clamp(1.5rem, 6vw, 3rem);
     padding: 0 1.25rem;
+    text-align: center;
   }
 
-  .title {
-    align-items: flex-start;
+  .title,
+  .left {
+    align-items: center;
+  }
+
+  .wheels,
+  .right.wheels p {
+    text-align: center;
   }
 
   .left .title,

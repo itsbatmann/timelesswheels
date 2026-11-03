@@ -26,7 +26,9 @@
   font-style: italic;
   font-size: clamp(2.5rem, 6vw, 5.25rem);
   font-weight: 400;
-  line-height: 1.02;
+  /* Masked lines again, and this one is an italic serif with descenders, so
+     it needs more room in the box than an upright face would. */
+  line-height: 1.12;
 }
 
 .about__lead {

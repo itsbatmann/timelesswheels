@@ -31,7 +31,9 @@
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 7.6vw, 8rem);
   font-weight: 400;
-  line-height: 0.88;
+  /* The name is split into masked lines, and a mask is only as tall as the
+     line box: at 0.88 the bottom of "Wheels" was cut off. */
+  line-height: 0.98;
   letter-spacing: -0.03em;
 }
 

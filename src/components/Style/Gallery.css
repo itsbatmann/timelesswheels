@@ -259,8 +259,9 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
+  /* One up, and still a standing card rather than a letterbox. */
   .card .img {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 4 / 5;
   }
 }
 
