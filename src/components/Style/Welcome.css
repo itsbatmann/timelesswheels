@@ -4,8 +4,8 @@
    warm ground, dark green ink, one centred paragraph, the script line carrying
    the swash. One wire wheel is drawn behind it and nothing else. */
 .welcontainer {
-  --wel-ground: #fff7d9;
-  --wel-ink: rgb(24, 35, 15);
+  --wel-ground: var(--beige);
+  --wel-ink: var(--beige-ink);
 
   position: relative;
   display: grid;

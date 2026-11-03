@@ -9,7 +9,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* svh is the screen with the browser's own bars showing, which is what a
+     phone actually gives you; vh is kept first for anything that does not
+     know the unit. */
   height: 100vh;
+  height: 100svh;
   background-color: var(--bg);
   color: var(--ink);
 }
@@ -105,6 +109,12 @@
    shrank to a postage stamp and left most of the screen empty, so the same
    composition is simply scaled to fill the screen it is on. */
 @media (max-width: 64em) {
+  /* The two halves are sized by their own text here, so without a gap they
+     meet in the middle and "Timeless" runs into "Wheels". */
+  .content {
+    gap: clamp(1rem, 3vw, 2.5rem);
+  }
+
   .left .title,
   .timeless {
     font-size: 11vw;
@@ -123,11 +133,33 @@
    half the screen, and "Timeless" breaks across two lines at any size worth
    setting it at. They stack instead — same two blocks, same treatment, each
    now with the full width to itself, which is what lets the type stay big. */
+/* A phone held sideways: wide enough that the two halves stay side by side,
+   but only a few hundred pixels tall, so the type is set from the height
+   rather than the width — at 11vw it filled the screen edge to edge and the
+   two halves collided. */
+@media (max-width: 64em) and (orientation: landscape) and (max-height: 34em) {
+  .left .title,
+  .timeless,
+  .right.wheels p {
+    font-size: 7.5vw;
+  }
+
+  .since-year {
+    font-size: 3vw;
+  }
+
+  .container {
+    padding-block: 2rem;
+  }
+}
+
 @media (max-width: 48em) {
   .container {
+    /* The home screen fills the screen on a phone as well. It can still grow
+       past it if the type ever needs more room. */
     height: auto;
-    min-height: 72svh;
-    padding-block: 5rem;
+    min-height: 100svh;
+    padding-block: clamp(3rem, 10svh, 5rem);
   }
 
   .content {

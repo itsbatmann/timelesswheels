@@ -10,8 +10,10 @@
   /* No forced screen height: at 82svh the columns finished a third of the way
      down and left a dead band above the legal line. */
   padding: clamp(3.5rem, 7vw, 6rem) var(--margin) clamp(1.5rem, 3vw, 2.5rem);
-  background: var(--paper);
-  color: var(--paper-ink);
+  /* The same warm beige as the welcome section, not the cooler paper the
+     statement is set on. */
+  background: var(--beige);
+  color: var(--beige-ink);
 }
 
 .foot__sheet {
@@ -65,7 +67,9 @@
   flex-wrap: wrap;
   gap: 0.35rem 1.25rem;
   margin: 0;
-  font-size: 0.8125rem;
+  /* 14px: the smallest this page sets anything, and still readable on a
+     phone. */
+  font-size: 0.875rem;
   color: #4a5440;
 }
 

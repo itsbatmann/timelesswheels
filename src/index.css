@@ -16,8 +16,12 @@
      It reads the same on the page and carries text both ways. */
   --accent: #e8625f;
   --accent-ink: #111a0b;
-  --paper: #e4e1d4;   /* the one light panel: the visit card */
+  --paper: #e4e1d4;   /* the cooler paper the founder's statement is set on */
   --paper-ink: #1a2612;
+  /* The client's warm beige. The welcome section and the footer are both set
+     on it, from here, so the two cannot drift apart. */
+  --beige: #fff7d9;
+  --beige-ink: rgb(24, 35, 15);
 
   /* The client's home screen is fixed and sets these two faces, so the whole
      page uses them rather than the face the direction dealt. Two, no more. */
